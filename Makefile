@@ -1,8 +1,14 @@
 APP=riposte
+BINARY=$(APP)
+BINARY_UNIX=$(BINARY)_unix
 .PHONY: build
 ## build: build the application
 build: clean
-	@go build -o ${APP} main.go
+	@go build -o ${BINARY} main.go
+	##@go build -o ${BINARY} cmd/${APP}/main.go
+
+build-linux: clean
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o $(BINARY_UNIX) cmd/${APP}/main.go
 
 ## run: runs application and checks for race conditions
 .PHONY: run
